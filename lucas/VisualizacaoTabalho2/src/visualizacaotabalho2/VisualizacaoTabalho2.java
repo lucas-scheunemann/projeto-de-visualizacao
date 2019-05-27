@@ -42,10 +42,11 @@ public static final int INICIAL = 1;
         
         BaseDeFrequencia base = new BaseDeFrequencia(); //base de dados com frequencia de cada palavra
         
-        ArrayList<String> documento = new ArrayList<String>();
+        ArrayList<String> documento = new ArrayList<>(); //lista para coleta das palavras
         
-        ArrayList<ArrayList<String>> archives;
-        archives = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> archives; //lista de palavras de cada documento
+        archives = new ArrayList<>();
+        
         
         for (File diretorio1 : diretorio) { //para cada arquivo no diretorio
             
@@ -106,15 +107,37 @@ public static final int INICIAL = 1;
             
         }
         
+        
         //calcular frequencia de ocorrencias de cada palavra
-        for (String palavra : base.getMap().keySet()){ //para cada palavra
+        for (String palavra : base.getMap().keySet()){ //para cada palavra,
+            int contagem = 0;
+            ArrayList<Double> freqs = new ArrayList();//lista de frequencias, numero de valores = numero de documentos
             
-            double frequencia = ((double)base.getMap().get(palavra) / BaseDeFrequencia.total) * 100; //calcula frequencia
-            System.out.printf(palavra + " freq: %.2f \n", frequencia); // e printa na tela
+            int doc = 0;//indicador de cada documento, usado para detectar qual documento dentro de archives
             
-            for (File diretorio1 : diretorio){
+            //tarefa: contar quantas vezes a palavra aparece nos documentos individualmente, então dividir pelo numero total de palavras em cada documento
+            for (File diretorio1 : diretorio) {//para cada documento,
+                
+                for (String palavra_doc : archives.get(doc)){//para cada palavra no documento,
+                    
+                    if (palavra.equals(palavra_doc)){ //se a palavra da base for a mesma palavra no documento.
+                        contagem++; //conta mais um
+                    }
+                    
+                }
+                
+                //aqui contagem = número de aparições da palavra por documento
+                //frequencia = frequencia de cada palavra em cada documento
+                double frequencia = ((double) contagem / archives.get(doc).size()) * 100;//esse 100 serve para transformar o valor em porcentagem.
+                
+                contagem = 0; //resetando contagem para o próximo documento
+                doc++; //contando o próximo documento
+                freqs.add(frequencia);//adiciona a frequencia no conjunto de frequencias da palavra
                 
             }
+            //aqui deve calcular a distância entre os documentos usando as porcentagens acima
+            //uso da distância euclidiana
+            System.out.println("palavra " +palavra+"frequencia: " + freqs.toString());
         }
         
         

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class BaseDeFrequencia {
     
-    private HashMap<String,Integer> map = new HashMap<String,Integer>();
+    private HashMap<String,Integer> map = new HashMap<String,Integer>();//base, (palavra / quantidade total)
     public static int total=0; //total de palavras na base
     public HashMap<String, Integer> getMap() {
         return map;
