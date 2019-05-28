@@ -33,7 +33,7 @@ public static final int INICIAL = 1;
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException {
         
         File diretorio[]; //conjunto dos arquivos do diretório
         File arquivo = new File("C:\\Users\\lucas\\Desktop\\PC\\FACULDADE\\visualização da informação\\trabalho 2\\documentos"); //caminho do diretório
@@ -79,25 +79,25 @@ public static final int INICIAL = 1;
                     if (base.getMap().isEmpty()) { //se a base estiver vazia,
                         base.getMap().put(linha1, INICIAL); //adiciona a palavra na base e adiciona 1 na contagem da mesma.
                         
-                        BaseDeFrequencia.total = BaseDeFrequencia.total + INICIAL; //contagem do número total de palavras
+                        BaseDeFrequencia.TOTAL = BaseDeFrequencia.TOTAL + INICIAL; //contagem do número total de palavras
                 
                     }
                     else {//se não estiver vazia,
                         if (base.getMap().containsKey(linha1)){ //se a palavra está na base,
                             base.getMap().put(linha1, base.getMap().get(linha1)+1);//adiciona 1 na contagem dele.
-                            BaseDeFrequencia.total = BaseDeFrequencia.total + INICIAL; //contagem do número total de palavras
+                            BaseDeFrequencia.TOTAL = BaseDeFrequencia.TOTAL + INICIAL; //contagem do número total de palavras
                                            
                         }
                         else { //se não estiver na base,
                             base.getMap().put(linha1, INICIAL);//adiciona na próxima posição e conta a primeira aparição.
-                            BaseDeFrequencia.total = BaseDeFrequencia.total + INICIAL; //contagem do número total de palavras
+                            BaseDeFrequencia.TOTAL = BaseDeFrequencia.TOTAL + INICIAL; //contagem do número total de palavras
                 
                         }
                     }
                 }
                 
             }
-            System.out.println(base.getMap().toString() + " \n total: " + BaseDeFrequencia.total); //apresentação da base de frequencia e total de palavras
+            System.out.println(base.getMap().toString() + " \n total: " + BaseDeFrequencia.TOTAL); //apresentação da base de frequencia e total de palavras
             
             ArrayList<String> copy = new ArrayList<String>(documento);//faz uma cópia das palavras adquiridas
             archives.add(copy);//adiciona as palavras em archives para definir quais palavras estão em quais textos (1ºtexto no 1º indice e assim por diante)
@@ -107,10 +107,15 @@ public static final int INICIAL = 1;
             
         }
         
+        double[][] freq_p_doc = new double[QTD_DOCS][BaseDeFrequencia.TOTAL];
+        
+        int repeticoes = 0; //conta o número de vezes que este 'for' abaixo se repete
         
         //calcular frequencia de ocorrencias de cada palavra
         for (String palavra : base.getMap().keySet()){ //para cada palavra,
-            int contagem = 0;
+
+            int contagem = 0; //conta quantas vezes a palavra aparece em cada documento
+            
             ArrayList<Double> freqs = new ArrayList();//lista de frequencias, numero de valores = numero de documentos
             
             int doc = 0;//indicador de cada documento, usado para detectar qual documento dentro de archives
@@ -130,15 +135,54 @@ public static final int INICIAL = 1;
                 //frequencia = frequencia de cada palavra em cada documento
                 double frequencia = ((double) contagem / archives.get(doc).size()) * 100;//esse 100 serve para transformar o valor em porcentagem.
                 
+                freq_p_doc[doc][repeticoes] = frequencia; //joga a frequencia separadamente pra cada documento
+                //essa variável será usada para calcular as distâncias entre documentos.
+                
                 contagem = 0; //resetando contagem para o próximo documento
                 doc++; //contando o próximo documento
                 freqs.add(frequencia);//adiciona a frequencia no conjunto de frequencias da palavra
                 
+                
+                
             }
             //aqui deve calcular a distância entre os documentos usando as porcentagens acima
             //uso da distância euclidiana
-            System.out.println("palavra " +palavra+"frequencia: " + freqs.toString());
+            //System.out.println("palavra: "+palavra +" -> frequencia: " + freqs.toString()); //sout das frequencias de cada palavra.
+            repeticoes++;
+            
         }
+        
+        //aqui estão as frequencias de cada palavra em cada documento.
+        for (int i =0;i<QTD_DOCS;i++){
+            System.out.print("frequencias do documento "+ i + " [");
+            for (int j=0;j<BaseDeFrequencia.TOTAL;j++){
+                System.out.print(freq_p_doc[i][j]+", ");
+            }
+            System.out.println("]\n");
+        }
+        
+        
+        double[][] matrizDeSimilaridade = new double[QTD_DOCS][QTD_DOCS]; //matriz de similaridade entre os documentos
+        
+        
+        for (int i = 0 ; i<QTD_DOCS;i++){ //contador das linhas da matriz
+            for (int j = 0; j<QTD_DOCS; j++){ //contador das colunas da matriz
+                matrizDeSimilaridade[i][j] = 0.0;//inicializando a matriz
+            }
+            
+        }
+        System.out.println("matriz de similaridade");
+        for (int i = 0 ; i<QTD_DOCS;i++){ //contador das linhas da matriz
+            for (int j = 0; j<QTD_DOCS; j++){ //contador das colunas da matriz
+                for (int x = 0; x < BaseDeFrequencia.TOTAL; x++){ //selecionador da palavra
+                    matrizDeSimilaridade[i][j] += Math.abs((freq_p_doc[i][x]) - (freq_p_doc[j][x]));
+                }
+                System.out.print("("+i+","+j+")"+matrizDeSimilaridade[i][j]+" ");
+            }
+            System.out.println();
+        }
+        //daqui, matrizDeSimilaridade possui a matriz corretamente
+        
         
         
     }
