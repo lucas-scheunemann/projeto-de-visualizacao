@@ -22,13 +22,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import mdsj.MDSJ;
 
 /**
  *
  * @author lucas
  */
-public class VisualizacaoTabalho2 {
+public class VisualizacaoTabalho2 extends Application {
 public static final int INICIAL = 1;
+private static double coordenadas[][];
+
     /**
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
@@ -183,8 +193,73 @@ public static final int INICIAL = 1;
         }
         //daqui, matrizDeSimilaridade possui a matriz corretamente
         
+        //======geração das coordenadas dos documentos=====
+        int n=matrizDeSimilaridade[0].length;    // number of data objects
+	double[][] output=MDSJ.classicalScaling(matrizDeSimilaridade); // apply MDS
+        
+        coordenadas = new double[2][n];
+        
+        System.out.println("======coordenadas=====");
+        for(int i=0; i<n; i++) {  // output all coordinates
+            System.out.println(i +": x " + output[0][i] +" y "+output[1][i]);
+            coordenadas[0][i] = output[0][i];
+            coordenadas[1][i] = output[1][i];
+	}        
+        
+        //=========gerando o gráfico==========
+        Application.launch(args);
         
         
     }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        
+        stage.setTitle("gráfico de estrela");
+        Group root = new Group();
+        Canvas canvas = new Canvas(400, 400);
+        Scene scene = new Scene(root, 400, 400);
+        
+        draw(canvas);
+        
+        root.getChildren().add(canvas);
+        stage.setScene(scene);
+        stage.show();
+        
+    }
+
+    private void draw(Canvas canvas) {
+        
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        
+        //gerar eixo das ordenadas
+        gc.setStroke(Color.WHITE); 
+        gc.setLineWidth(0.5);
+        gc.strokeLine(200, 0, 200, 400);
+        gc.strokeText(new String("100"), 202, 110);
+        gc.strokeText(new String("-100"), 202, 290);
+        gc.strokeText(new String("200"), 202, 10);
+        gc.strokeText(new String("-200"), 202, 390);
+        
+        //gerar eixo das abscissas
+        gc.setStroke(Color.WHITE); 
+        gc.setLineWidth(0.5);
+        gc.strokeLine(0, 200, 400, 200);
+        gc.strokeText(new String("100"), 280, 198);
+        gc.strokeText(new String("-100"), 100, 198); 
+        gc.strokeText(new String("200"), 380, 198);
+        gc.strokeText(new String("-200"), 0, 198); 
+        
+        
+        //gerando as coordenadas
+        for(int i=0; i<coordenadas[0].length; i++) {
+            
+            System.out.println("i= "+i+" n= "+ coordenadas[0].length + "x= "+(coordenadas[0][i]+200)+" y= " +(coordenadas[1][i] +200));
+        }
+    }
+
+    
     
 }
