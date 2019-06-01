@@ -257,6 +257,17 @@ private static double coordenadas[][];
         for(int i=0; i<coordenadas[0].length; i++) {
             
             System.out.println("i= "+i+" n= "+ coordenadas[0].length + "x= "+(coordenadas[0][i]+200)+" y= " +(coordenadas[1][i] +200));
+            gc.setStroke(Color.WHITE); 
+            gc.setLineWidth(1);
+            gc.strokeLine((coordenadas[0][i]+200), (coordenadas[1][i] +200), (coordenadas[0][i]+200)+1, (coordenadas[1][i] +200)+1);
+            
+            
+            gc.strokeLine((coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)-100, (coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)-100);
+            gc.strokeLine((coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)-100, (coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)+100);
+            gc.strokeLine((coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)+100, (coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)+100);
+            gc.strokeLine((coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)+100, (coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)-100);
+            
+            
         }
     }
 
