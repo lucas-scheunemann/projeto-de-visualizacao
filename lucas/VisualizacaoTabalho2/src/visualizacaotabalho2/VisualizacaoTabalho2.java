@@ -255,17 +255,19 @@ private static double coordenadas[][];
         
         //gerando as coordenadas
         for(int i=0; i<coordenadas[0].length; i++) {
+            Integer docum;
+            docum = new Integer(i+1);
             
             System.out.println("i= "+i+" n= "+ coordenadas[0].length + "x= "+(coordenadas[0][i]+200)+" y= " +(coordenadas[1][i] +200));
             gc.setStroke(Color.WHITE); 
             gc.setLineWidth(1);
             gc.strokeLine((coordenadas[0][i]+200), (coordenadas[1][i] +200), (coordenadas[0][i]+200)+1, (coordenadas[1][i] +200)+1);
+            gc.strokeText(new String(docum.toString() + "º documento"), (coordenadas[0][i]+200)-30, (coordenadas[1][i] +200));
             
-            
-            gc.strokeLine((coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)-100, (coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)-100);
-            gc.strokeLine((coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)-100, (coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)+100);
-            gc.strokeLine((coordenadas[0][i]+200)-100, (coordenadas[1][i] +200)+100, (coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)+100);
-            gc.strokeLine((coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)+100, (coordenadas[0][i]+200)+100, (coordenadas[1][i] +200)-100);
+            gc.strokeLine((coordenadas[0][i]+200)-80, (coordenadas[1][i] +200)-80, (coordenadas[0][i]+200)+80, (coordenadas[1][i] +200)-80);
+            gc.strokeLine((coordenadas[0][i]+200)-80, (coordenadas[1][i] +200)-80, (coordenadas[0][i]+200)-80, (coordenadas[1][i] +200)+80);
+            gc.strokeLine((coordenadas[0][i]+200)-80, (coordenadas[1][i] +200)+80, (coordenadas[0][i]+200)+80, (coordenadas[1][i] +200)+80);
+            gc.strokeLine((coordenadas[0][i]+200)+80, (coordenadas[1][i] +200)+80, (coordenadas[0][i]+200)+80, (coordenadas[1][i] +200)-80);
             
             
         }
