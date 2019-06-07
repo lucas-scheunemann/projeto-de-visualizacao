@@ -117,6 +117,10 @@ private static double coordenadas[][];
             
         }
         
+        
+        
+        
+        
         double[][] freq_p_doc = new double[QTD_DOCS][BaseDeFrequencia.TOTAL];
         
         int repeticoes = 0; //conta o número de vezes que este 'for' abaixo se repete
@@ -147,6 +151,14 @@ private static double coordenadas[][];
                 
                 freq_p_doc[doc][repeticoes] = frequencia; //joga a frequencia separadamente pra cada documento
                 //essa variável será usada para calcular as distâncias entre documentos.
+                
+                //=======================================================================================
+                //aqui temos: 
+                //QTD_DOCS = N;    (quantidade de documentos)
+                //contagem = Df(w); (quantidade de documentos que palavra w aparece)
+                //freq_p_doc = Tf(w,d) (frequencia de aparição de palavra w em documento d)
+                //=======================================================================================
+                
                 
                 contagem = 0; //resetando contagem para o próximo documento
                 doc++; //contando o próximo documento
