@@ -129,6 +129,7 @@ private static double coordenadas[][];
         for (String palavra : base.getMap().keySet()){ //para cada palavra,
 
             int contagem = 0; //conta quantas vezes a palavra aparece em cada documento
+            int dfw = 0;//Df(w) para a fórmula de tfidf
             
             ArrayList<Double> freqs = new ArrayList();//lista de frequencias, numero de valores = numero de documentos
             
@@ -152,13 +153,10 @@ private static double coordenadas[][];
                 freq_p_doc[doc][repeticoes] = frequencia; //joga a frequencia separadamente pra cada documento
                 //essa variável será usada para calcular as distâncias entre documentos.
                 
-                //=======================================================================================
-                //aqui temos: 
-                //QTD_DOCS = N;    (quantidade de documentos)
-                //contagem = Df(w); (quantidade de documentos que palavra w aparece)
-                //freq_p_doc = Tf(w,d) (frequencia de aparição de palavra w em documento d)
-                //=======================================================================================
                 
+                if (contagem != 0){
+                    dfw++;
+                }
                 
                 contagem = 0; //resetando contagem para o próximo documento
                 doc++; //contando o próximo documento
@@ -170,6 +168,19 @@ private static double coordenadas[][];
             //aqui deve calcular a distância entre os documentos usando as porcentagens acima
             //uso da distância euclidiana
             //System.out.println("palavra: "+palavra +" -> frequencia: " + freqs.toString()); //sout das frequencias de cada palavra.
+            
+            for (int i =0; i<QTD_DOCS;i++){
+                double nPorDf = (double) QTD_DOCS / (double) dfw;
+                freq_p_doc[i][repeticoes] = (freq_p_doc[i][repeticoes]* (Math.log(nPorDf)));
+                //System.out.println("palavra "+ repeticoes + " / documento " + i + "frequencia " + freq_p_doc[i][repeticoes]);
+            }
+                //=======================================================================================
+                //aqui temos: 
+                //QTD_DOCS = N;    (quantidade de documentos)
+                //dfWords[w] = Df(w) (quantidade de documentos que palavra w aparece);
+                //frequencia = Tf(w,d) (frequencia de aparição de palavra w em documento d);
+                //tfidf(w,d) = tf(w,d) * log (N/Df(w))
+                //=======================================================================================
             repeticoes++;
             
         }
